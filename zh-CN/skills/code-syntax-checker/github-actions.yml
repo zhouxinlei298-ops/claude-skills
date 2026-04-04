@@ -1,0 +1,108 @@
+# GitHub Actions 示例：代码语法检查
+# 将此文件保存为 .github/workflows/syntax-check.yml
+
+name: Code Syntax Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+
+    - name: Download syntax checker
+      run: |
+        # 从技能目录复制语法检查工具
+        mkdir -p syntax-checker
+        cp -r ~/.claude/skills/code-syntax-checker/* syntax-checker/
+
+    - name: Check Python syntax
+      run: |
+        python3 syntax-checker/check_syntax.py --json $(find . -name "*.py" -not -path "./node_modules/*" -not -path "./venv/*" | tr '\n' ' ')
+
+    - name: Check JavaScript syntax
+      run: |
+        # 检查 Node.js 是否安装
+        if command -v node >/dev/null 2>&1; then
+          python3 syntax-checker/check_syntax.py --json $(find . -name "*.js" -not -path "./node_modules/*" | tr '\n' ' ')
+        else
+          echo "Node.js not installed, skipping JS checks"
+        fi
+
+    - name: Check TypeScript syntax
+      run: |
+        # 检查 TypeScript 是否安装
+        if command -v tsc >/dev/null 2>&1; then
+          python3 syntax-checker/check_syntax.py --json $(find . -name "*.ts" -not -path "./node_modules/*" | tr '\n' ' ')
+        else
+          echo "TypeScript not installed, skipping TS checks"
+        fi
+
+    - name: Check Java syntax
+      run: |
+        # 检查 Java 是否安装
+        if command -v javac >/dev/null 2>&1; then
+          python3 syntax-checker/check_syntax.py --json $(find . -name "*.java" | tr '\n' ' ')
+        else
+          echo "Java not installed, skipping Java checks"
+        fi
+
+    - name: Check C/C++ syntax
+      run: |
+        # 检查 GCC 是否安装
+        if command -v gcc >/dev/null 2>&1; then
+          python3 syntax-checker/check_syntax.py --json $(find . -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | tr '\n' ' ')
+        else
+          echo "GCC not installed, skipping C/C++ checks"
+        fi
+
+    - name: Check Go syntax
+      run: |
+        # 检查 Go 是否安装
+        if command -v go >/dev/null 2>&1; then
+          python3 syntax-checker/check_syntax.py --json $(find . -name "*.go" | tr '\n' ' ')
+        else
+          echo "Go not installed, skipping Go checks"
+        fi
+
+    - name: Check Rust syntax
+      run: |
+        # 检查 Rust 是否安装
+        if command -v rustc >/dev/null 2>&1; then
+          python3 syntax-checker/check_syntax.py --json $(find . -name "*.rs" | tr '\n' ' ')
+        else
+          echo "Rust not installed, skipping Rust checks"
+        fi
+
+    - name: Generate report
+      if: always()
+      run: |
+        # 生成简化的报告
+        echo "## 代码语法检查报告" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "检查的语言和文件类型：" >> $GITHUB_STEP_SUMMARY
+        echo "- Python (.py)" >> $GITHUB_STEP_SUMMARY
+        echo "- JavaScript (.js)" >> $GITHUB_STEP_SUMMARY
+        echo "- TypeScript (.ts)" >> $GITHUB_STEP_SUMMARY
+        echo "- Java (.java)" >> $GITHUB_STEP_SUMMARY
+        echo "- C/C++ (.c, .cpp, .h, .hpp)" >> $GITHUB_STEP_SUMMARY
+        echo "- Go (.go)" >> $GITHUB_STEP_SUMMARY
+        echo "- Rust (.rs)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "完整工具文档：`~/.claude/skills/code-syntax-checker/README.md`" >> $GITHUB_STEP_SUMMARY

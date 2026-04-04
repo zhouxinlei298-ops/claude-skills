@@ -1,0 +1,61 @@
+{
+    "syntax_check": {
+        "strict_mode": true,
+        "max_errors": 10,
+        "ignore_warnings": false,
+        "auto_fix": false,
+        "encoding": "utf-8"
+    },
+    "languages": {
+        "python": {
+            "checkers": ["py_compile", "ast"],
+            "fixers": [],
+            "file_extensions": [".py"]
+        },
+        "javascript": {
+            "checkers": ["node"],
+            "fixers": [],
+            "file_extensions": [".js"]
+        },
+        "typescript": {
+            "checkers": ["tsc"],
+            "fixers": [],
+            "file_extensions": [".ts"]
+        },
+        "java": {
+            "checkers": ["javac"],
+            "fixers": [],
+            "file_extensions": [".java"]
+        },
+        "cpp": {
+            "checkers": ["gcc", "clang"],
+            "fixers": [],
+            "file_extensions": [".cpp", ".cc", ".cxx", ".c", ".h", ".hpp"]
+        },
+        "go": {
+            "checkers": ["go"],
+            "fixers": [],
+            "file_extensions": [".go"]
+        },
+        "rust": {
+            "checkers": ["rustc"],
+            "fixers": [],
+            "file_extensions": [".rs"]
+        },
+        "html": {
+            "checkers": ["basic"],
+            "fixers": [],
+            "file_extensions": [".html"]
+        },
+        "css": {
+            "checkers": ["basic"],
+            "fixers": [],
+            "file_extensions": [".css"]
+        },
+        "json": {
+            "checkers": ["json"],
+            "fixers": [],
+            "file_extensions": [".json"]
+        }
+    }
+}
