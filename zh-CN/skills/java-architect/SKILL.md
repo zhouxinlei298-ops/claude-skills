@@ -35,6 +35,7 @@ metadata:
 | Spring Boot | `references/spring-boot-setup.md` | 项目设置、配置、starters |
 | 响应式 | `references/reactive-webflux.md` | WebFlux、Project Reactor、R2DBC |
 | 数据访问 | `references/jpa-optimization.md` | JPA、Hibernate、查询调优 |
+| MyBatis | `references/mybatis-best-practices.md` | MyBatis 参数映射、SQL优化、PO设计 |
 | 安全 | `references/spring-security.md` | OAuth2、JWT、方法级安全 |
 | 测试 | `references/testing-patterns.md` | JUnit 5、TestContainers、Mockito |
 
